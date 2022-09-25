@@ -3,18 +3,25 @@ import { Request, ResponseToolkit } from "@hapi/hapi";
 import {
   getProduct,
   getAllProducts,
-  updateProduct,
   incrementRemovedFromCart,
 } from "../models/product";
 
 export const get = async (request: Request, h: ResponseToolkit) => {
   const { productId } = request.params;
+  const { limit = 10, skip = 1 } = request.query;
+
   if (productId) {
-    const product = await getProduct(productId);
+    const product = await getProduct({ productId });
     if (!product) return Boom.notFound();
     return product;
   }
-  const products = await getAllProducts();
+  const page = limit * skip - limit;
+
+  const products = await getAllProducts({
+    limit,
+    offset: page,
+  });
+
   return products;
 };
 

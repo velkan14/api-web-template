@@ -5,7 +5,7 @@ const { afterEach, beforeEach, describe, it } = (exports.lab = Lab.script());
 import { Server } from "@hapi/hapi";
 import { db } from "../../src/config/database";
 import { serverInit } from "../../src/lib/hapi";
-import products from "./products.json";
+import products from "./products";
 
 describe("GET /", () => {
   let server: Server;
@@ -28,7 +28,7 @@ describe("GET /", () => {
     expect(res.statusCode).to.equal(200);
   });
 
-  it("Should list blogs all product", async () => {
+  it("Should list products max 10", async () => {
     const res = await server.inject({
       method: "get",
       url: "/api/v1/products",
@@ -36,11 +36,46 @@ describe("GET /", () => {
 
     const json = JSON.parse(res.payload);
     expect(res.statusCode).to.equal(200);
-    expect(json.length).to.equal(3);
+    expect(json.length).to.equal(10);
     expect(json[0]).to.include("id");
     expect(json[0]).to.include("name");
     expect(json[0]).to.include("price");
     expect(json[0]).to.include("imageSrc");
+  });
+
+  it("Should list products max 2", async () => {
+    const res = await server.inject({
+      method: "get",
+      url: "/api/v1/products?limit=2",
+    });
+
+    const json = JSON.parse(res.payload);
+    expect(res.statusCode).to.equal(200);
+    expect(json.length).to.equal(2);
+    expect(json[0]).to.include("id");
+    expect(json[0]).to.include("name");
+    expect(json[0]).to.include("price");
+    expect(json[0]).to.include("imageSrc");
+  });
+
+  it("Should list products max 2 from second page", async () => {
+    const product = products[2];
+    const res = await server.inject({
+      method: "get",
+      url: "/api/v1/products?limit=2&skip=2",
+    });
+
+    const json = JSON.parse(res.payload);
+    expect(res.statusCode).to.equal(200);
+    expect(json.length).to.equal(2);
+    expect(json[0]).to.include("id");
+    expect(json[0]).to.include("name");
+    expect(json[0]).to.include("price");
+    expect(json[0]).to.include("imageSrc");
+    expect(json[0].id).to.equal(product.id);
+    expect(json[0].name).to.equal(product.name);
+    expect(json[0].price).to.equal(product.price);
+    expect(json[0].imageSrc).to.equal(product.imageSrc);
   });
 
   it("Should fetch product by id", async () => {

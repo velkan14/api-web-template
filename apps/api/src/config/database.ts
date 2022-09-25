@@ -7,6 +7,7 @@ export const db = knex({
   connection: {
     filename: "./mydb.sqlite",
   },
+  useNullAsDefault: true,
 });
 
 export const databaseInit = async () => {
