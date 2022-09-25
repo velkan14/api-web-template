@@ -1,25 +1,22 @@
 import Link from "next/link";
 import { useShoppingCart } from "../../contexts/ShoppingCartContext";
-import useProduct from "../../hooks/useProduct";
+import { Product } from "../../types/product";
 import { formatCurrency } from "../../utils/currency";
 import { creator } from "../../utils/fetcher";
 import { API_BASE_URL } from "../../utils/url";
 
 type Props = {
-  productId: string;
+  product: Product;
   quantity: number;
 };
 
-const CartItem = ({ productId, quantity }: Props) => {
-  const { data: product } = useProduct(productId);
+const CartItem = ({ product, quantity }: Props) => {
   const { removeFromCart } = useShoppingCart();
 
   const onRemoveItem = (productId: string) => {
     removeFromCart(productId);
     creator(`${API_BASE_URL}/products/${productId}/cartRemoved`);
   };
-
-  if (!product) return <li className="flex py-6">Loading...</li>;
 
   return (
     <li className="flex py-6">
@@ -35,7 +32,7 @@ const CartItem = ({ productId, quantity }: Props) => {
         <div>
           <div className="flex justify-between text-base font-medium text-gray-900">
             <h3>
-              <Link href={`product/${productId}`}>{product.name}</Link>
+              <Link href={`product/${product.id}`}>{product.name}</Link>
             </h3>
             <p className="ml-4">{formatCurrency(product.price)}</p>
           </div>
@@ -47,7 +44,7 @@ const CartItem = ({ productId, quantity }: Props) => {
             <button
               type="button"
               className="font-medium text-indigo-600 hover:text-indigo-500"
-              onClick={() => onRemoveItem(productId)}
+              onClick={() => onRemoveItem(product.id)}
             >
               Remove
             </button>

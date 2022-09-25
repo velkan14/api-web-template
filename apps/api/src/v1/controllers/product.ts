@@ -30,9 +30,10 @@ export const getList = async (request: Request, h: ResponseToolkit) => {
     ids: string | undefined;
   };
 
-  if (ids) {
+  if (typeof ids === "string") {
+    if (ids.length === 0) return [];
+
     const idsArray = ids.split(",");
-    console.log(idsArray);
     const products = await getProductsFiltered({ ids: idsArray });
     return products;
   }

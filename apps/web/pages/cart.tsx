@@ -1,11 +1,28 @@
 import Link from "next/link";
-import { useState } from "react";
+import { useMemo } from "react";
 import CartItem from "../components/cart/CartItem";
 import ContentWrapper from "../components/ContentWrapper";
 import { useShoppingCart } from "../contexts/ShoppingCartContext";
+import useProducts from "../hooks/useProducts";
+import { formatCurrency } from "../utils/currency";
 
 function CartPage() {
   const { items } = useShoppingCart();
+  const itemsIds = useMemo(() => {
+    return items.map((i) => i.id);
+  }, [items]);
+
+  const { data: products } = useProducts({ filterIds: itemsIds });
+
+  const price = useMemo(() => {
+    return (
+      products?.reduce((total, curr) => {
+        const item = items.find((i) => i.id === curr.id);
+        const quantity = item?.quantity || 0;
+        return total + curr.price * quantity;
+      }, 0) || 0
+    );
+  }, [items, products]);
 
   return (
     <ContentWrapper>
@@ -17,13 +34,24 @@ function CartPage() {
             <div className="mt-8">
               <div className="flow-root">
                 <ul role="list" className="-my-6 divide-y divide-gray-200">
-                  {items.map((product) => (
-                    <CartItem
-                      key={product.id}
-                      productId={product.id}
-                      quantity={product.quantity}
-                    />
-                  ))}
+                  {items.map((item) => {
+                    const product = products?.find((p) => p.id === item.id);
+
+                    if (!product)
+                      return (
+                        <li key={item.id} className="flex py-6">
+                          Loading...
+                        </li>
+                      );
+
+                    return (
+                      <CartItem
+                        key={item.id}
+                        product={product}
+                        quantity={item.quantity}
+                      />
+                    );
+                  })}
                 </ul>
               </div>
             </div>
@@ -32,7 +60,7 @@ function CartPage() {
           <div className="px-4 py-6 border-t border-gray-200 sm:px-6">
             <div className="flex justify-between text-base font-medium text-gray-900">
               <p>Subtotal</p>
-              <p>$262.00</p>
+              <p>{formatCurrency(price)}</p>
             </div>
             <p className="mt-0.5 text-sm text-gray-500">
               Shipping and taxes calculated at checkout.

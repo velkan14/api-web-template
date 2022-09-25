@@ -14,5 +14,5 @@ export const creator = async <T>(url: string, body?: T) => {
     body: JSON.stringify(body),
   });
   // DO NOT return res.json()
-  return res.json();
+  return res;
 };

@@ -3,14 +3,28 @@ import { Product } from "../types/product";
 import { fetcher } from "../utils/fetcher";
 import { API_BASE_URL } from "../utils/url";
 
-const useProducts = (props?: SWRConfiguration) => {
+type Args = {
+  filterIds?: string[];
+  props?: SWRConfiguration;
+};
+
+const useProducts = (args?: Args) => {
+  const { filterIds, props } = args || {
+    filterIds: undefined,
+    props: undefined,
+  };
+
+  const url =
+    filterIds !== undefined
+      ? `${API_BASE_URL}/products?ids=${filterIds.join(",")}`
+      : `${API_BASE_URL}/products`;
+
   const { data, mutate } = useSWR<Product[] | undefined>(
-    `${API_BASE_URL}/products`,
+    [url, filterIds],
     fetcher,
     props
   );
 
-  console.log(data);
   return { data, mutate };
 };
 
