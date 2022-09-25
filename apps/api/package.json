@@ -4,15 +4,19 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon src/index.ts"
+    "dev": "nodemon src/index.ts",
+    "test": "lab --typescript -I 'Reflect,core,_babelPolyfill,regeneratorRuntime,__core-js_shared__,CSS' ./tests/*"
   },
   "dependencies": {
+    "@hapi/boom": "^10.0.0",
     "@hapi/hapi": "^20.2.2",
     "better-sqlite3": "^7.6.2",
     "joi": "^17.6.0",
     "knex": "^2.3.0"
   },
   "devDependencies": {
+    "@hapi/code": "^9.0.1",
+    "@hapi/lab": "^25.0.1",
     "@types/hapi__hapi": "^20.0.12",
     "@types/node": "^18.7.18",
     "eslint-config-custom": "*",

@@ -8,6 +8,6 @@
     "module": "commonjs",
     "resolveJsonModule": true
   },
-  "include": ["**/*.ts"],
+  "include": ["**/*.ts", "tests/**/*.ts"],
   "exclude": ["node_modules"]
 }
