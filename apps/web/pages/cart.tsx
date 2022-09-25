@@ -12,7 +12,11 @@ function CartPage() {
     return items.map((i) => i.id);
   }, [items]);
 
-  const { data: products } = useProducts({ filterIds: itemsIds });
+  const { data } = useProducts({ filterIds: itemsIds });
+  const { products } = data || {
+    products: [],
+    totalCountProducts: 0,
+  };
 
   const price = useMemo(() => {
     return (

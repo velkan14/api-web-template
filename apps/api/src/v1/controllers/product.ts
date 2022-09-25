@@ -5,6 +5,7 @@ import {
   getAllProducts,
   incrementRemovedFromCart,
   getProductsFiltered,
+  countProducts,
 } from "../models/product";
 
 export const get = async (request: Request, h: ResponseToolkit) => {
@@ -30,22 +31,27 @@ export const getList = async (request: Request, h: ResponseToolkit) => {
     ids: string | undefined;
   };
 
+  let products = [];
   if (typeof ids === "string") {
     if (ids.length === 0) return [];
 
     const idsArray = ids.split(",");
-    const products = await getProductsFiltered({ ids: idsArray });
-    return products;
+    products = await getProductsFiltered({ ids: idsArray });
+  } else {
+    const page = limit * skip - limit;
+
+    products = await getAllProducts({
+      limit,
+      offset: page,
+    });
   }
 
-  const page = limit * skip - limit;
+  const totalCountProducts = await countProducts();
 
-  const products = await getAllProducts({
-    limit,
-    offset: page,
-  });
-
-  return products;
+  return {
+    products,
+    totalCountProducts,
+  };
 };
 
 export const cartRemovedProduct = async (

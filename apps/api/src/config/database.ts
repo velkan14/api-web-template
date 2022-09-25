@@ -32,6 +32,16 @@ export const databaseSeed = async () => {
     };
   });
 
+  for (let i = 1; i < 100; i++) {
+    const id = randomUUID();
+    newProducts.push({
+      id,
+      name: String(i),
+      price: i * 10,
+      imageSrc: `https://robohash.org/${id}}`,
+    });
+  }
+
   await db("products").del();
   await db("products").insert(newProducts);
 };

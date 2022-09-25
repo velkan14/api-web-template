@@ -24,8 +24,9 @@ export const getAllProducts = async ({
   return await db<Product>("products").select().limit(limit).offset(offset);
 };
 
-export const updateProduct = async (product: Product) => {
-  return await db("products").where({ id: product.id }).update(product);
+export const countProducts = async () => {
+  const count = await db("products").count("id as CNT").first();
+  return count?.CNT;
 };
 
 export const incrementRemovedFromCart = async (productId: string) => {

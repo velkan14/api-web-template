@@ -34,13 +34,30 @@ describe("GET /", () => {
       url: "/api/v1/products",
     });
 
-    const json = JSON.parse(res.payload);
     expect(res.statusCode).to.equal(200);
-    expect(json.length).to.equal(10);
-    expect(json[0]).to.include("id");
-    expect(json[0]).to.include("name");
-    expect(json[0]).to.include("price");
-    expect(json[0]).to.include("imageSrc");
+
+    const json = JSON.parse(res.payload);
+    const { products } = json;
+
+    expect(products.length).to.equal(10);
+    expect(products[0]).to.include("id");
+    expect(products[0]).to.include("name");
+    expect(products[0]).to.include("price");
+    expect(products[0]).to.include("imageSrc");
+  });
+
+  it("Should get the total count of products", async () => {
+    const res = await server.inject({
+      method: "get",
+      url: "/api/v1/products",
+    });
+
+    expect(res.statusCode).to.equal(200);
+
+    const json = JSON.parse(res.payload);
+    const { totalCountProducts } = json;
+
+    expect(totalCountProducts).to.equal(products.length);
   });
 
   it("Should list products max 2", async () => {
@@ -49,13 +66,16 @@ describe("GET /", () => {
       url: "/api/v1/products?limit=2",
     });
 
-    const json = JSON.parse(res.payload);
     expect(res.statusCode).to.equal(200);
-    expect(json.length).to.equal(2);
-    expect(json[0]).to.include("id");
-    expect(json[0]).to.include("name");
-    expect(json[0]).to.include("price");
-    expect(json[0]).to.include("imageSrc");
+
+    const json = JSON.parse(res.payload);
+    const { products } = json;
+
+    expect(products.length).to.equal(2);
+    expect(products[0]).to.include("id");
+    expect(products[0]).to.include("name");
+    expect(products[0]).to.include("price");
+    expect(products[0]).to.include("imageSrc");
   });
 
   it("Should list products max 2 from second page", async () => {
@@ -65,17 +85,20 @@ describe("GET /", () => {
       url: "/api/v1/products?limit=2&skip=2",
     });
 
-    const json = JSON.parse(res.payload);
     expect(res.statusCode).to.equal(200);
-    expect(json.length).to.equal(2);
-    expect(json[0]).to.include("id");
-    expect(json[0]).to.include("name");
-    expect(json[0]).to.include("price");
-    expect(json[0]).to.include("imageSrc");
-    expect(json[0].id).to.equal(product.id);
-    expect(json[0].name).to.equal(product.name);
-    expect(json[0].price).to.equal(product.price);
-    expect(json[0].imageSrc).to.equal(product.imageSrc);
+
+    const json = JSON.parse(res.payload);
+    const { products: prod } = json;
+
+    expect(prod.length).to.equal(2);
+    expect(prod[0]).to.include("id");
+    expect(prod[0]).to.include("name");
+    expect(prod[0]).to.include("price");
+    expect(prod[0]).to.include("imageSrc");
+    expect(prod[0].id).to.equal(product.id);
+    expect(prod[0].name).to.equal(product.name);
+    expect(prod[0].price).to.equal(product.price);
+    expect(prod[0].imageSrc).to.equal(product.imageSrc);
   });
 
   it("Should fetch products filtered by id", async () => {
@@ -85,12 +108,15 @@ describe("GET /", () => {
       url: `/api/v1/products?ids=${productsId.join(",")}`,
     });
 
-    const json = JSON.parse(res.payload);
     expect(res.statusCode).to.equal(200);
-    expect(json.length).to.equal(3);
-    expect(productsId).to.contains(json[0].id);
-    expect(productsId).to.contain(json[1].id);
-    expect(productsId).to.contain(json[2].id);
+
+    const json = JSON.parse(res.payload);
+    const { products: prod } = json;
+
+    expect(prod.length).to.equal(3);
+    expect(productsId).to.contains(prod[0].id);
+    expect(productsId).to.contain(prod[1].id);
+    expect(productsId).to.contain(prod[2].id);
   });
 
   it("Should fetch product by id", async () => {
@@ -100,8 +126,10 @@ describe("GET /", () => {
       url: `/api/v1/products/${product.id}`,
     });
 
-    const json = JSON.parse(res.payload);
     expect(res.statusCode).to.equal(200);
+
+    const json = JSON.parse(res.payload);
+
     expect(json.id).to.equal(product.id);
     expect(json.name).to.equal(product.name);
     expect(json.price).to.equal(product.price);
