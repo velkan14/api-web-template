@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 const ContentWrapper = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="bg-white">

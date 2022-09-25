@@ -15,7 +15,7 @@ export default function Nav() {
               <img
                 className="block w-auto h-8"
                 src="/favicon.ico"
-                alt="Your Company"
+                alt="Company"
               />
             </div>
             <div className="flex ml-4 space-x-4">

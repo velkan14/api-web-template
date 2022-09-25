@@ -8,9 +8,13 @@ Build a shopping basket that helps you get this data. You are free to use the la
 
 You have 1 week to accomplish the assignment. You decide yourself how much time and effort you invest in it, but one of our colleagues tends to say: "Make sure it is good" ;-). Please send us (jobs@madewithlove.com) an email when you are ready with the assignment. Please mention your name, Github username and a link to what we need to review.
 
-# Turborepo starter
+# Shop
 
-This is an official Yarn v1 starter turborepo.
+This is a project that simulates a online shop. It has an API that lists the products and has a frontend that shows the products and lets you add them to the cart. The checkout is not working currently.
+
+## Overview
+
+The API is made with nodejs with hapi. The web is made with NextJS, React and Typescript. You can read more about each in `apps/api/README.md` or `apps/web/README.md`
 
 ## What's inside?
 

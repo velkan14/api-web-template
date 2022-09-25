@@ -1,6 +1,11 @@
 # Web
 
-A shop that list products and lets you add them to a cart.
+A shop that list products and lets you add them to a cart. Currently you can do the following:
+
+- List the available products
+- Add products to the cart
+- Remove products from the cart
+- Checkout is currently not working
 
 ## Libraries
 
