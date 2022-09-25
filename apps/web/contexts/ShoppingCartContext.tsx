@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from "react";
+import React, { createContext, useContext, useMemo } from "react";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { CartItem } from "../types/cart";
 
@@ -6,6 +6,7 @@ interface ContextProps {
   items: CartItem[];
   addToCart: (id: string) => void;
   removeFromCart: (id: string) => void;
+  numberItems: number;
 }
 
 // @ts-ignore
@@ -52,10 +53,19 @@ export const ShoppingCartProvider = ({
     });
   };
 
+  const numberItems = useMemo(
+    () =>
+      cart.reduce((total, item) => {
+        return total + item.quantity;
+      }, 0),
+    [cart]
+  );
+
   const value = {
     items: cart,
     addToCart,
     removeFromCart,
+    numberItems,
   };
 
   return (

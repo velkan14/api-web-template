@@ -19,7 +19,7 @@ export default function Web() {
 
   return (
     <ContentWrapper>
-      <h2 className="text-2xl font-bold tracking-tight text-gray-900">
+      <h2 className="mb-6 text-2xl font-bold tracking-tight text-gray-900">
         Amazing Products!
       </h2>
       <ReactPaginate

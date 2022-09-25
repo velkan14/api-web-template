@@ -1,11 +1,9 @@
 import Link from "next/link";
-
-const navigation = [
-  { name: "Store", href: "/", current: true },
-  { name: "Cart", href: "/cart", current: false },
-];
+import { useShoppingCart } from "../contexts/ShoppingCartContext";
 
 export default function Nav() {
+  const { numberItems } = useShoppingCart();
+
   return (
     <nav className="bg-gray-800">
       <div className="px-2 mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -19,17 +17,16 @@ export default function Nav() {
               />
             </div>
             <div className="flex ml-4 space-x-4">
-              {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  aria-current={item.current ? "page" : undefined}
-                >
-                  <span className="px-3 py-2 text-sm font-medium text-gray-300 rounded-md cursor-pointer hover:bg-gray-700 hover:text-white">
-                    {item.name}
-                  </span>
-                </Link>
-              ))}
+              <Link href="/">
+                <span className="px-3 py-2 text-sm font-medium text-gray-300 rounded-md cursor-pointer hover:bg-gray-700 hover:text-white">
+                  Store
+                </span>
+              </Link>
+              <Link href="/cart">
+                <span className="px-3 py-2 text-sm font-medium text-gray-300 rounded-md cursor-pointer hover:bg-gray-700 hover:text-white">
+                  {`Cart (${numberItems})`}
+                </span>
+              </Link>
             </div>
           </div>
         </div>
