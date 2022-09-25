@@ -78,6 +78,21 @@ describe("GET /", () => {
     expect(json[0].imageSrc).to.equal(product.imageSrc);
   });
 
+  it("Should fetch products filtered by id", async () => {
+    const productsId = [products[0].id, products[3].id, products[6].id];
+    const res = await server.inject({
+      method: "GET",
+      url: `/api/v1/products?ids=${productsId.join(",")}`,
+    });
+
+    const json = JSON.parse(res.payload);
+    expect(res.statusCode).to.equal(200);
+    expect(json.length).to.equal(3);
+    expect(productsId).to.contains(json[0].id);
+    expect(productsId).to.contain(json[1].id);
+    expect(productsId).to.contain(json[2].id);
+  });
+
   it("Should fetch product by id", async () => {
     const product = products[0];
     const res = await server.inject({

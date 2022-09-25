@@ -1,12 +1,12 @@
 import { ServerRoute } from "@hapi/hapi";
 import joi from "joi";
-import { get, cartRemovedProduct } from "../controllers/product";
+import { get, cartRemovedProduct, getList } from "../controllers/product";
 
 const routes: ServerRoute[] = [
   {
     method: "GET",
     path: "/",
-    handler: get,
+    handler: getList,
   },
   {
     method: "GET",

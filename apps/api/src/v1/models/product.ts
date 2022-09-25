@@ -10,6 +10,10 @@ export const getProduct = async ({ productId }: { productId: string }) => {
   return null;
 };
 
+export const getProductsFiltered = async ({ ids }: { ids: string[] }) => {
+  return await db<Product>("products").select().whereIn("id", ids);
+};
+
 export const getAllProducts = async ({
   limit = 10,
   offset = 0,
