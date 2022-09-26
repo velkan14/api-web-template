@@ -15,6 +15,7 @@ cd technical-assignment-full-stack-engineer-velkan14/
 yarn install
 yarn dev
 ```
+Now go to [localhost:3000](http://localhost:3000/)
 
 ## What's inside?
 
