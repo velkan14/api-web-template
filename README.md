@@ -14,7 +14,7 @@ git clone https://github.com/madewithlove/technical-assignment-full-stack-engine
 cd technical-assignment-full-stack-engineer-velkan14/
 yarn install
 yarn dev
-``
+```
 
 ## What's inside?
 
